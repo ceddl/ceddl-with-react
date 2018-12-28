@@ -26,7 +26,8 @@
         "utils.ts",
         "app.tsx",
         "footer.tsx",
-        "todoItem.tsx"
+        "todoItem.tsx",
+        "about.tsx"
     ],
     "exclude": [],
     "baseUrl": "types",

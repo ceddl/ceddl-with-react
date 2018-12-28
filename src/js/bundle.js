@@ -23952,9 +23952,39 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = require("react");
+var TodoAbout = (function (_super) {
+    __extends(TodoAbout, _super);
+    function TodoAbout() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    TodoAbout.prototype.render = function () {
+        return (React.createElement("p", { "ceddl-observe": "page", "data-category": "about" },
+            "This application is a ",
+            React.createElement("a", { href: "http://todomvc.com/" }, "TodoMVC"),
+            " example written using React."));
+    };
+    return TodoAbout;
+}(React.Component));
+exports.TodoAbout = TodoAbout;
+
+},{"react":11}],19:[function(require,module,exports){
+"use strict";
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
+var React = require("react");
 var ReactDOM = require("react-dom");
 var todoModel_1 = require("./todoModel");
 var footer_1 = require("./footer");
+var about_1 = require("./about");
 var todoItem_1 = require("./todoItem");
 var constants_1 = require("./constants");
 var TodoApp = (function (_super) {
@@ -23972,7 +24002,8 @@ var TodoApp = (function (_super) {
         var router = Router({
             '/': setState.bind(this, { nowShowing: constants_1.ALL_TODOS }),
             '/active': setState.bind(this, { nowShowing: constants_1.ACTIVE_TODOS }),
-            '/completed': setState.bind(this, { nowShowing: constants_1.COMPLETED_TODOS })
+            '/completed': setState.bind(this, { nowShowing: constants_1.COMPLETED_TODOS }),
+            '/about': setState.bind(this, { nowShowing: constants_1.ABOUT_TODOS })
         });
         router.init('/');
     };
@@ -24015,6 +24046,7 @@ var TodoApp = (function (_super) {
         var _this = this;
         var footer;
         var main;
+        var base;
         var todos = this.props.model.todos;
         var shownTodos = todos.filter(function (todo) {
             switch (_this.state.nowShowing) {
@@ -24022,6 +24054,8 @@ var TodoApp = (function (_super) {
                     return !todo.completed;
                 case constants_1.COMPLETED_TODOS:
                     return todo.completed;
+                case constants_1.ABOUT_TODOS:
+                    return true;
                 default:
                     return true;
             }
@@ -24043,23 +24077,34 @@ var TodoApp = (function (_super) {
                 React.createElement("label", { htmlFor: "toggle-all" }, "Mark all as complete"),
                 React.createElement("ul", { className: "todo-list" }, todoItems)));
         }
+        if (this.state.nowShowing === constants_1.ABOUT_TODOS) {
+            base = (React.createElement(about_1.TodoAbout, null));
+        }
+        else {
+            base = (React.createElement("div", { className: "todoapp" },
+                React.createElement("header", { className: "header" },
+                    React.createElement("h1", null, "todos"),
+                    React.createElement("input", { ref: "newField", className: "new-todo", placeholder: "What needs to be done?", onKeyDown: function (e) { return _this.handleNewTodoKeyDown(e); }, autoFocus: true })),
+                main,
+                footer));
+        }
         return (React.createElement("div", null,
-            React.createElement("header", { className: "header" },
-                React.createElement("h1", null, "todos"),
-                React.createElement("input", { ref: "newField", className: "new-todo", placeholder: "What needs to be done?", onKeyDown: function (e) { return _this.handleNewTodoKeyDown(e); }, autoFocus: true })),
-            main,
-            footer));
+            base,
+            React.createElement("p", { className: "info links" },
+                React.createElement("a", { href: "#/" }, "Home"),
+                "\u00A0|\u00A0",
+                React.createElement("a", { href: "#/about" }, "About"))));
     };
     return TodoApp;
 }(React.Component));
 var model = new todoModel_1.TodoModel('react-todos');
 function render() {
-    ReactDOM.render(React.createElement(TodoApp, { model: model }), document.getElementsByClassName('todoapp')[0]);
+    ReactDOM.render(React.createElement(TodoApp, { model: model }), document.getElementById('todoapp'));
 }
 model.subscribe(render);
 render();
 
-},{"./constants":19,"./footer":20,"./todoItem":21,"./todoModel":22,"react":11,"react-dom":8}],19:[function(require,module,exports){
+},{"./about":18,"./constants":20,"./footer":21,"./todoItem":22,"./todoModel":23,"react":11,"react-dom":8}],20:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var ALL_TODOS = 'all';
@@ -24068,12 +24113,14 @@ var ACTIVE_TODOS = 'active';
 exports.ACTIVE_TODOS = ACTIVE_TODOS;
 var COMPLETED_TODOS = 'completed';
 exports.COMPLETED_TODOS = COMPLETED_TODOS;
+var ABOUT_TODOS = 'about';
+exports.ABOUT_TODOS = ABOUT_TODOS;
 var ENTER_KEY = 13;
 exports.ENTER_KEY = ENTER_KEY;
 var ESCAPE_KEY = 27;
 exports.ESCAPE_KEY = ESCAPE_KEY;
 
-},{}],20:[function(require,module,exports){
+},{}],21:[function(require,module,exports){
 "use strict";
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = Object.setPrototypeOf ||
@@ -24123,7 +24170,7 @@ var TodoFooter = (function (_super) {
 }(React.Component));
 exports.TodoFooter = TodoFooter;
 
-},{"./constants":19,"./utils":23,"classnames":1,"react":11}],21:[function(require,module,exports){
+},{"./constants":20,"./utils":24,"classnames":1,"react":11}],22:[function(require,module,exports){
 "use strict";
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = Object.setPrototypeOf ||
@@ -24202,7 +24249,7 @@ var TodoItem = (function (_super) {
 }(React.Component));
 exports.TodoItem = TodoItem;
 
-},{"./constants":19,"classnames":1,"react":11,"react-dom":8}],22:[function(require,module,exports){
+},{"./constants":20,"classnames":1,"react":11,"react-dom":8}],23:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var utils_1 = require("./utils");
@@ -24263,7 +24310,7 @@ var TodoModel = (function () {
 }());
 exports.TodoModel = TodoModel;
 
-},{"./utils":23}],23:[function(require,module,exports){
+},{"./utils":24}],24:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var Utils = (function () {
@@ -24312,4 +24359,4 @@ var Utils = (function () {
 }());
 exports.Utils = Utils;
 
-},{}]},{},[18]);
+},{}]},{},[19]);

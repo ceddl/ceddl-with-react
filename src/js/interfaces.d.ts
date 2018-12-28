@@ -4,6 +4,9 @@ interface ITodo {
   completed: boolean
 }
 
+interface ITodoAboutProps {
+}
+
 interface ITodoItemProps {
   key : string,
   todo : ITodo;

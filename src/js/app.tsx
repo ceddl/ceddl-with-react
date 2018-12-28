@@ -11,8 +11,9 @@ import * as React from "react";
 import * as ReactDOM from "react-dom";
 import { TodoModel } from "./todoModel";
 import { TodoFooter } from "./footer";
+import { TodoAbout } from "./about";
 import { TodoItem } from "./todoItem";
-import { ALL_TODOS, ACTIVE_TODOS, COMPLETED_TODOS, ENTER_KEY } from "./constants";
+import { ALL_TODOS, ACTIVE_TODOS, COMPLETED_TODOS, ABOUT_TODOS, ENTER_KEY } from "./constants";
 
 class TodoApp extends React.Component<IAppProps, IAppState> {
 
@@ -31,7 +32,8 @@ class TodoApp extends React.Component<IAppProps, IAppState> {
     var router = Router({
       '/': setState.bind(this, {nowShowing: ALL_TODOS}),
       '/active': setState.bind(this, {nowShowing: ACTIVE_TODOS}),
-      '/completed': setState.bind(this, {nowShowing: COMPLETED_TODOS})
+      '/completed': setState.bind(this, {nowShowing: COMPLETED_TODOS}),
+      '/about': setState.bind(this, {nowShowing: ABOUT_TODOS})
     });
     router.init('/');
   }
@@ -85,6 +87,7 @@ class TodoApp extends React.Component<IAppProps, IAppState> {
   public render() {
     var footer;
     var main;
+    var base;
     const todos = this.props.model.todos;
 
     var shownTodos = todos.filter((todo) => {
@@ -93,6 +96,8 @@ class TodoApp extends React.Component<IAppProps, IAppState> {
         return !todo.completed;
       case COMPLETED_TODOS:
         return todo.completed;
+      case ABOUT_TODOS:
+        return true;
       default:
         return true;
       }
@@ -155,20 +160,37 @@ class TodoApp extends React.Component<IAppProps, IAppState> {
       );
     }
 
+    if (this.state.nowShowing === ABOUT_TODOS) {
+      base = (
+          <TodoAbout/>
+      )
+     } else {
+        base = (
+          <div className="todoapp">
+            <header className="header">
+              <h1>todos</h1>
+              <input
+                ref="newField"
+                className="new-todo"
+                placeholder="What needs to be done?"
+                onKeyDown={ e => this.handleNewTodoKeyDown(e) }
+                autoFocus={true}
+              />
+            </header>
+            {main}
+            {footer}
+          </div>
+      )
+     }
+
     return (
       <div>
-        <header className="header">
-          <h1>todos</h1>
-          <input
-            ref="newField"
-            className="new-todo"
-            placeholder="What needs to be done?"
-            onKeyDown={ e => this.handleNewTodoKeyDown(e) }
-            autoFocus={true}
-          />
-        </header>
-        {main}
-        {footer}
+        {base}
+        <p className="info links">
+          <a href="#/">Home</a>
+          &nbsp;|&nbsp;
+          <a href="#/about">About</a>
+        </p>
       </div>
     );
   }
@@ -179,7 +201,7 @@ var model = new TodoModel('react-todos');
 function render() {
   ReactDOM.render(
     <TodoApp model={model}/>,
-    document.getElementsByClassName('todoapp')[0]
+    document.getElementById('todoapp')
   );
 }
 
