@@ -36,7 +36,7 @@ class TodoFooter extends React.Component<ITodoFooterProps, {}> {
         <ul className="filters">
           <li>
             <a
-              href="#/"
+              href="#/all"
               className={classNames({selected: nowShowing === ALL_TODOS})}>
                 All
             </a>

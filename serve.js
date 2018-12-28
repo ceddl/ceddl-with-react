@@ -6,10 +6,8 @@ var modules = new static.Server('./');
 require('http').createServer(function (request, response) {
     request.addListener('end', function () {
         if(request.url.includes('/node_modules/')) {
-            console.log('aaa', request.url);
             modules.serve(request, response);
         } else {
-            console.log(request.url);
             file.serve(request, response);
         }
     }).resume();

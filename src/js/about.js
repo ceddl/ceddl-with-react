@@ -17,10 +17,14 @@ var TodoAbout = (function (_super) {
         return _super !== null && _super.apply(this, arguments) || this;
     }
     TodoAbout.prototype.render = function () {
-        return (React.createElement("p", { "ceddl-observe": "page", "data-category": "about" },
-            "This application is a ",
-            React.createElement("a", { href: "http://todomvc.com/" }, "TodoMVC"),
-            " example written using React."));
+        return (React.createElement("div", { className: "info links todoabout", "ceddl-observe": "page", "data-category": "about" },
+            React.createElement("p", null,
+                "This application is a ",
+                React.createElement("a", { href: "http://todomvc.com/" }, "TodoMVC"),
+                " example written using React."),
+            React.createElement("p", null,
+                "TodoMVC is a great project helping you select an MV* framework : ",
+                React.createElement("a", { href: "http://todomvc.com/" }, "website"))));
     };
     return TodoAbout;
 }(React.Component));

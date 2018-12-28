@@ -13,10 +13,16 @@ class TodoAbout extends React.Component<ITodoAboutProps, {}> {
 
   public render() {
     return (
-        <p ceddl-observe="page"
-           data-category="about">
-            This application is a <a href="http://todomvc.com/" >TodoMVC</a> example written using React.
-        </p>
+        <div className="info links todoabout"
+             ceddl-observe="page"
+             data-category="about">
+            <p>
+                This application is a <a href="http://todomvc.com/" >TodoMVC</a> example written using React.
+            </p>
+            <p>
+                TodoMVC is a great project helping you select an MV* framework : <a href="http://todomvc.com/">website</a>
+            </p>
+        </div>
     );
   }
 }

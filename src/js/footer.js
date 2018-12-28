@@ -34,7 +34,7 @@ var TodoFooter = (function (_super) {
                 " left"),
             React.createElement("ul", { className: "filters" },
                 React.createElement("li", null,
-                    React.createElement("a", { href: "#/", className: classNames({ selected: nowShowing === constants_1.ALL_TODOS }) }, "All")),
+                    React.createElement("a", { href: "#/all", className: classNames({ selected: nowShowing === constants_1.ALL_TODOS }) }, "All")),
                 ' ',
                 React.createElement("li", null,
                     React.createElement("a", { href: "#/active", className: classNames({ selected: nowShowing === constants_1.ACTIVE_TODOS }) }, "Active")),

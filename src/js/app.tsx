@@ -7,6 +7,9 @@
 /// <reference path="./interfaces.d.ts"/>
 
 declare var Router;
+declare var ceddl:any;
+import * as JsonViewer from "../assets/json-viewer.js"
+import * as ceddlDataModels from "../assets/data-models.js"
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import { TodoModel } from "./todoModel";
@@ -20,6 +23,8 @@ class TodoApp extends React.Component<IAppProps, IAppState> {
   public state : IAppState;
 
   constructor(props : IAppProps) {
+    window['JsonViewer'] = JsonViewer;
+    console.log(ceddlDataModels);
     super(props);
     this.state = {
       nowShowing: ALL_TODOS,
@@ -36,6 +41,7 @@ class TodoApp extends React.Component<IAppProps, IAppState> {
       '/about': setState.bind(this, {nowShowing: ABOUT_TODOS})
     });
     router.init('/');
+    ceddl.initialize();
   }
 
   public handleNewTodoKeyDown(event : React.KeyboardEvent) {
@@ -166,7 +172,9 @@ class TodoApp extends React.Component<IAppProps, IAppState> {
       )
      } else {
         base = (
-          <div className="todoapp">
+          <div className="todoapp"
+               ceddl-observe="page"
+               data-category="home">
             <header className="header">
               <h1>todos</h1>
               <input

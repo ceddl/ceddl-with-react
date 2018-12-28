@@ -10,6 +10,8 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
+var JsonViewer = require("../assets/json-viewer.js");
+var ceddlDataModels = require("../assets/data-models.js");
 var React = require("react");
 var ReactDOM = require("react-dom");
 var todoModel_1 = require("./todoModel");
@@ -20,7 +22,10 @@ var constants_1 = require("./constants");
 var TodoApp = (function (_super) {
     __extends(TodoApp, _super);
     function TodoApp(props) {
-        var _this = _super.call(this, props) || this;
+        var _this = this;
+        window['JsonViewer'] = JsonViewer;
+        console.log(ceddlDataModels);
+        _this = _super.call(this, props) || this;
         _this.state = {
             nowShowing: constants_1.ALL_TODOS,
             editing: null
@@ -36,6 +41,7 @@ var TodoApp = (function (_super) {
             '/about': setState.bind(this, { nowShowing: constants_1.ABOUT_TODOS })
         });
         router.init('/');
+        ceddl.initialize();
     };
     TodoApp.prototype.handleNewTodoKeyDown = function (event) {
         if (event.keyCode !== constants_1.ENTER_KEY) {
@@ -111,7 +117,7 @@ var TodoApp = (function (_super) {
             base = (React.createElement(about_1.TodoAbout, null));
         }
         else {
-            base = (React.createElement("div", { className: "todoapp" },
+            base = (React.createElement("div", { className: "todoapp", "ceddl-observe": "page", "data-category": "home" },
                 React.createElement("header", { className: "header" },
                     React.createElement("h1", null, "todos"),
                     React.createElement("input", { ref: "newField", className: "new-todo", placeholder: "What needs to be done?", onKeyDown: function (e) { return _this.handleNewTodoKeyDown(e); }, autoFocus: true })),
