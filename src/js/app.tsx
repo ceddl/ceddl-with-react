@@ -8,10 +8,9 @@
 
 declare var Router;
 declare var ceddl:any;
-import * as JsonViewer from "../assets/json-viewer.js"
-import * as ceddlDataModels from "../assets/data-models.js"
 import * as React from "react";
 import * as ReactDOM from "react-dom";
+import { CeddlDataModels } from "../assets/data-models"
 import { TodoModel } from "./todoModel";
 import { TodoFooter } from "./footer";
 import { TodoAbout } from "./about";
@@ -19,15 +18,15 @@ import { TodoItem } from "./todoItem";
 import { ALL_TODOS, ACTIVE_TODOS, COMPLETED_TODOS, ABOUT_TODOS, ENTER_KEY } from "./constants";
 
 class TodoApp extends React.Component<IAppProps, IAppState> {
-
   public state : IAppState;
 
   constructor(props : IAppProps) {
-    window['JsonViewer'] = JsonViewer;
-    console.log(ceddlDataModels);
+    // Load app ceddl data models. result display only for demo perposes.
+    new CeddlDataModels().initResultDisplay();
     super(props);
     this.state = {
       nowShowing: ALL_TODOS,
+      pageRouteChange: false,
       editing: null
     };
   }
@@ -35,13 +34,21 @@ class TodoApp extends React.Component<IAppProps, IAppState> {
   public componentDidMount() {
     var setState = this.setState;
     var router = Router({
-      '/': setState.bind(this, {nowShowing: ALL_TODOS}),
-      '/active': setState.bind(this, {nowShowing: ACTIVE_TODOS}),
-      '/completed': setState.bind(this, {nowShowing: COMPLETED_TODOS}),
-      '/about': setState.bind(this, {nowShowing: ABOUT_TODOS})
+      '/': setState.bind(this, {nowShowing: ALL_TODOS, pageRouteChange: true}),
+      '/all': setState.bind(this, {nowShowing: ALL_TODOS, pageRouteChange: false}),
+      '/active': setState.bind(this, {nowShowing: ACTIVE_TODOS, pageRouteChange: false}),
+      '/completed': setState.bind(this, {nowShowing: COMPLETED_TODOS, pageRouteChange: false}),
+      '/about': setState.bind(this, {nowShowing: ABOUT_TODOS, pageRouteChange: true})
     });
     router.init('/');
-    ceddl.initialize();
+  }
+
+  // Clean datalayer in re-initialize on page change.
+  public componentDidUpdate(prevProps, prevState) {
+    if(this.state.pageRouteChange) {
+      this.state.pageRouteChange = false;
+      ceddl.initialize();
+    }
   }
 
   public handleNewTodoKeyDown(event : React.KeyboardEvent) {
@@ -159,7 +166,11 @@ class TodoApp extends React.Component<IAppProps, IAppState> {
           >
             Mark all as complete
           </label>
-          <ul className="todo-list">
+          <ul className="todo-list"
+              ceddl-observe="todoList"
+              data-items-total={todos.length}
+              data-items-left={activeTodoCount}
+              data-active-filter={this.state.nowShowing}>
             {todoItems}
           </ul>
         </section>

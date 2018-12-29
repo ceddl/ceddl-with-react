@@ -65,7 +65,7 @@ var TodoItem = (function (_super) {
         return (React.createElement("li", { className: classNames({
                 completed: this.props.todo.completed,
                 editing: this.props.editing
-            }) },
+            }), "ceddl-observe": "todoItem", "data-state": this.props.todo.completed ? 'completed' : 'active', "data-content": this.props.todo.title, "data-content-length": this.props.todo.title.length },
             React.createElement("div", { className: "view" },
                 React.createElement("input", { className: "toggle", type: "checkbox", checked: this.props.todo.completed, onChange: this.props.onToggle }),
                 React.createElement("label", { onDoubleClick: function (e) { return _this.handleEdit(); } }, this.props.todo.title),

@@ -10,10 +10,9 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var JsonViewer = require("../assets/json-viewer.js");
-var ceddlDataModels = require("../assets/data-models.js");
 var React = require("react");
 var ReactDOM = require("react-dom");
+var data_models_1 = require("../assets/data-models");
 var todoModel_1 = require("./todoModel");
 var footer_1 = require("./footer");
 var about_1 = require("./about");
@@ -23,11 +22,11 @@ var TodoApp = (function (_super) {
     __extends(TodoApp, _super);
     function TodoApp(props) {
         var _this = this;
-        window['JsonViewer'] = JsonViewer;
-        console.log(ceddlDataModels);
+        new data_models_1.CeddlDataModels().initResultDisplay();
         _this = _super.call(this, props) || this;
         _this.state = {
             nowShowing: constants_1.ALL_TODOS,
+            pageRouteChange: false,
             editing: null
         };
         return _this;
@@ -35,13 +34,19 @@ var TodoApp = (function (_super) {
     TodoApp.prototype.componentDidMount = function () {
         var setState = this.setState;
         var router = Router({
-            '/': setState.bind(this, { nowShowing: constants_1.ALL_TODOS }),
-            '/active': setState.bind(this, { nowShowing: constants_1.ACTIVE_TODOS }),
-            '/completed': setState.bind(this, { nowShowing: constants_1.COMPLETED_TODOS }),
-            '/about': setState.bind(this, { nowShowing: constants_1.ABOUT_TODOS })
+            '/': setState.bind(this, { nowShowing: constants_1.ALL_TODOS, pageRouteChange: true }),
+            '/all': setState.bind(this, { nowShowing: constants_1.ALL_TODOS, pageRouteChange: false }),
+            '/active': setState.bind(this, { nowShowing: constants_1.ACTIVE_TODOS, pageRouteChange: false }),
+            '/completed': setState.bind(this, { nowShowing: constants_1.COMPLETED_TODOS, pageRouteChange: false }),
+            '/about': setState.bind(this, { nowShowing: constants_1.ABOUT_TODOS, pageRouteChange: true })
         });
         router.init('/');
-        ceddl.initialize();
+    };
+    TodoApp.prototype.componentDidUpdate = function (prevProps, prevState) {
+        if (this.state.pageRouteChange) {
+            this.state.pageRouteChange = false;
+            ceddl.initialize();
+        }
     };
     TodoApp.prototype.handleNewTodoKeyDown = function (event) {
         if (event.keyCode !== constants_1.ENTER_KEY) {
@@ -111,7 +116,7 @@ var TodoApp = (function (_super) {
             main = (React.createElement("section", { className: "main" },
                 React.createElement("input", { id: "toggle-all", className: "toggle-all", type: "checkbox", onChange: function (e) { return _this.toggleAll(e); }, checked: activeTodoCount === 0 }),
                 React.createElement("label", { htmlFor: "toggle-all" }, "Mark all as complete"),
-                React.createElement("ul", { className: "todo-list" }, todoItems)));
+                React.createElement("ul", { className: "todo-list", "ceddl-observe": "todoList", "data-items-total": todos.length, "data-items-left": activeTodoCount, "data-active-filter": this.state.nowShowing }, todoItems)));
         }
         if (this.state.nowShowing === constants_1.ABOUT_TODOS) {
             base = (React.createElement(about_1.TodoAbout, null));

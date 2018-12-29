@@ -83,7 +83,11 @@ class TodoItem extends React.Component<ITodoItemProps, ITodoItemState> {
       <li className={classNames({
         completed: this.props.todo.completed,
         editing: this.props.editing
-      })}>
+      })}
+          ceddl-observe="todoItem"
+          data-state={this.props.todo.completed ? 'completed' : 'active'}
+          data-content={this.props.todo.title}
+          data-content-length={this.props.todo.title.length}>
         <div className="view">
           <input
             className="toggle"

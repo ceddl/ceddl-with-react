@@ -1,7 +1,7 @@
 {
   "private": true,
   "scripts": {
-    "build": "./node_modules/typescript/bin/tsc -p ./src/js/ && node ./node_modules/browserify/bin/cmd -r ./src/assets/json-viewer.js -r ./node_modules/@ceddl/ceddl-polyfill/dist/index.min.js -r ./src/assets/data-models.js ./src/js/app.js -o ./src/js/bundle.js",
+    "build": "./node_modules/typescript/bin/tsc -p ./src/js/ && node ./node_modules/browserify/bin/cmd ./src/js/app.js -o ./src/js/bundle.js",
     "start": "node ./serve.js"
   },
   "dependencies": {
